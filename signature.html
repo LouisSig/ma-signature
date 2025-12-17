@@ -4,27 +4,29 @@
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 </head>
 <body>
-    <script>
-        Office.onReady(function (info) {
-            // Cette fonction sera appelée automatiquement par Outlook
-        });
+    <div id="sig" style="margin-bottom: 20px;">
+        <strong style="color: #005a9e; font-size: 14pt;">Louis Verbrugge</strong><br>
+        <span style="color: #666;">SIGMA France</span><br>
+        <a href="https://www.sigma-france.fr" style="color: #005a9e;">www.sigma-france.fr</a>
+    </div>
 
-        function insertSignature(event) {
-            // Ton design de signature
-            var signatureHtml = '<div style="font-family: Calibri, sans-serif;">' +
-                                '<strong style="color: #005a9e; font-size: 14pt;">Louis Verbrugge</strong><br>' +
-                                '<span style="color: #666;">SIGMA France</span><br>' +
-                                '<a href="https://www.sigma-france.fr" style="color: #005a9e;">www.sigma-france.fr</a>' +
-                                '</div><br>';
-
+<script>
+    Office.onReady(function (info) {
+        if (info.host === Office.HostType.Outlook) {
+            // On récupère le design qui est écrit plus haut dans le div "sig"
+            var mySignature = document.getElementById("sig").innerHTML;
+            
             Office.context.mailbox.item.body.setSignatureAsync(
-                signatureHtml,
+                mySignature,
                 { coercionType: Office.CoercionType.Html },
                 function (asyncResult) {
-                    event.completed(); // Important : dit à Outlook que c'est fini
+                    if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+                        console.log("Signature Sigma insérée avec succès.");
+                    }
                 }
             );
         }
-    </script>
+    });
+</script>
 </body>
 </html>
