@@ -3,26 +3,28 @@
 <head>
     <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
 </head>
-<body style="font-family: Calibri, sans-serif;">
-    <div id="sig" style="margin-bottom: 20px;">
-        <strong style="color: #005a9e; font-size: 14pt;">Louis Verbrugge</strong><br>
-        <span style="color: #666;">SIGMA France</span><br>
-        <a href="https://www.sigma-france.fr" style="color: #005a9e;">www.sigma-france.fr</a>
-    </div>
-
+<body>
     <script>
         Office.onReady(function (info) {
-            if (info.host === Office.HostType.Outlook) {
-                // On récupère le contenu du div "sig"
-                var signatureHtml = document.getElementById("sig").innerHTML;
-                
-                // On l'injecte au-dessus de l'historique
-                Office.context.mailbox.item.body.setSignatureAsync(
-                    signatureHtml,
-                    { coercionType: Office.CoercionType.Html }
-                );
-            }
+            // Cette fonction sera appelée automatiquement par Outlook
         });
+
+        function insertSignature(event) {
+            // Ton design de signature
+            var signatureHtml = '<div style="font-family: Calibri, sans-serif;">' +
+                                '<strong style="color: #005a9e; font-size: 14pt;">Louis Verbrugge</strong><br>' +
+                                '<span style="color: #666;">SIGMA France</span><br>' +
+                                '<a href="https://www.sigma-france.fr" style="color: #005a9e;">www.sigma-france.fr</a>' +
+                                '</div><br>';
+
+            Office.context.mailbox.item.body.setSignatureAsync(
+                signatureHtml,
+                { coercionType: Office.CoercionType.Html },
+                function (asyncResult) {
+                    event.completed(); // Important : dit à Outlook que c'est fini
+                }
+            );
+        }
     </script>
 </body>
 </html>
