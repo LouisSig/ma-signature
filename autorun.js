@@ -1,5 +1,6 @@
 /* global Office */
 
+
 Office.onReady(() => {
   // Associe l’ID du manifest à la fonction JS
   Office.actions.associate("onNewMessageComposeHandler", onNewMessageComposeHandler);
@@ -34,3 +35,4 @@ function onNewMessageComposeHandler(event) {
 function onNewAppointmentComposeHandler(event) {
   setSig(event);
 }
+
