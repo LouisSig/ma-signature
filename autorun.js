@@ -1,24 +1,21 @@
 Office.onReady();
 
 function checkSignature(event) {
-    // Votre signature HTML
-    const signatureHtml = "<br/><br/>--<br/><b>SIGMA Signature</b>";
+    // Modifiez ici votre HTML de signature
+    const signatureHtml = "<br/><br/>--<br/><b>SIGMA Signature</b><br/>Envoyé automatiquement.";
 
-    // Utilisation de setSignatureAsync
-    // Cette méthode insère la signature à l'emplacement dédié (en bas)
-    // sans écraser le corps du message.
     Office.context.mailbox.item.body.setSignatureAsync(
         signatureHtml,
         { coercionType: Office.CoercionType.Html },
         function (asyncResult) {
-            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
-                console.log("Signature ajoutée.");
+            if (asyncResult.status === Office.AsyncResultStatus.Failed) {
+                console.error(asyncResult.error.message);
             }
-            // Obligatoire pour libérer l'événement
+            // Très important : indique la fin du traitement
             event.completed();
         }
     );
 }
 
-// Liaison de la fonction au manifest
+// Associe le nom de la fonction du manifest au code JS
 Office.actions.associate("checkSignature", checkSignature);
