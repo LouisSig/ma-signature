@@ -13,9 +13,16 @@ function onNewMessageComposeHandler(event) {
       <a href="https://www.sigma-france.fr" style="color:#005a9e;">www.sigma-france.fr</a>
     </div>`;
 
-  Office.context.mailbox.item.body.setSignatureAsync(
-    html,
-    { coercionType: Office.CoercionType.Html },
-    () => event.completed()
-  );
+  try {
+    Office.context.mailbox.item.body.setSignatureAsync(
+      html,
+      { coercionType: Office.CoercionType.Html },
+      (asyncResult) => {
+        // Toujours terminer l’event, succès OU erreur
+        event.completed();
+      }
+    );
+  } catch (e) {
+    event.completed();
+  }
 }
