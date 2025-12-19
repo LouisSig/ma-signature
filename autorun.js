@@ -26,3 +26,6 @@ function onNewMessageComposeHandler(event) {
     event.completed();
   }
 }
+
+
+console.log("test log")
