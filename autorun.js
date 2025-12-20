@@ -1,7 +1,12 @@
-Office.onReady();
+// Initialisation obligatoire
+Office.onReady(function () {
+    // Le code peut être ajouté ici si nécessaire
+});
 
+/**
+ * Fonction appelée lors de la création d'un nouveau message
+ */
 function checkSignature(event) {
-    // Modifiez ici votre HTML de signature
     const signatureHtml = "<br/><br/>--<br/><b>SIGMA Signature</b><br/>Envoyé automatiquement.";
 
     Office.context.mailbox.item.body.setSignatureAsync(
@@ -11,11 +16,11 @@ function checkSignature(event) {
             if (asyncResult.status === Office.AsyncResultStatus.Failed) {
                 console.error(asyncResult.error.message);
             }
-            // Très important : indique la fin du traitement
+            // Indispensable pour libérer le thread Outlook
             event.completed();
         }
     );
 }
 
-// Associe le nom de la fonction du manifest au code JS
+// CETTE LIGNE DOIT ÊTRE À LA FIN ET DOIT CORRESPONDRE AU NOM DANS LE XML
 Office.actions.associate("checkSignature", checkSignature);
