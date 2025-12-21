@@ -24,7 +24,7 @@ function checkSignature(event) {
                   <tr>
                     <td style="padding: 0px 1px 0px 0px;">
                       <p style="margin: 1px;">
-                        <img src="https://louissig.github.io/ma-signature/assets/sigma.png" alt="" title="Logo" width="293" height="66" style="display: block; border: 0px; max-width: 293px;">
+                        <img src="./assets/sigma.png" alt="" title="Logo" width="293" height="66" style="display: block; border: 0px; max-width: 293px;">
                       </p>
                     </td>
                   </tr>
