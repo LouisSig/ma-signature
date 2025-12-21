@@ -24,7 +24,7 @@ function checkSignature(event) {
                   <tr>
                     <td style="padding: 0px 1px 0px 0px;">
                       <p style="margin: 1px;">
-                        <img src="./assets/sigma.png" alt="" title="Logo" width="293" height="66" style="display: block; border: 0px; max-width: 293px;">
+                        <img src="https://louissig.github.io/ma-signature/assets/sigma.png" alt="" title="Logo" width="293" height="66" style="display: block; border: 0px; max-width: 293px;">
                       </p>
                     </td>
                   </tr>
@@ -35,7 +35,7 @@ function checkSignature(event) {
                           <td width="32" style="font-size: 0px; line-height: 0px; padding: 33px 1px 0px 94px;">
                             <p style="margin: 1px;">
                               <a href="https://www.linkedin.com/company/groupe-sigma-france/" target="_blank">
-                                <img src="./assets/linkedin.png" alt="" width="32" height="32" style="display: block; border: 0px; max-width: 32px;">
+                                <img src="https://louissig.github.io/ma-signature/assets/linkedin.png" alt="" width="32" height="32" style="display: block; border: 0px; max-width: 32px;">
                               </a>
                             </p>
                           </td>
@@ -43,7 +43,7 @@ function checkSignature(event) {
                           <td width="32" style="font-size: 0px; line-height: 0px; padding: 33px 1px 0px 0px;">
                             <p style="margin: 1px;">
                               <a href="https://www.instagram.com/groupesigma/" target="_blank">
-                                <img src="./assets/instagram.png" alt="" width="32" height="32" style="display: block; border: 0px; max-width: 32px;">
+                                <img src="https://louissig.github.io/ma-signature/assets/instagram.png" alt="" width="32" height="32" style="display: block; border: 0px; max-width: 32px;">
                               </a>
                             </p>
                           </td>
@@ -51,7 +51,7 @@ function checkSignature(event) {
                           <td width="32" style="font-size: 0px; line-height: 0px; padding: 33px 1px 0px 0px;">
                             <p style="margin: 1px;">
                               <a href="https://sigma-france.fr">
-                                <img src="./assets/siteWeb.png" alt="" width="32" height="32" style="display: block; border: 0px; max-width: 32px;">
+                                <img src="https://louissig.github.io/ma-signature/assets/siteWeb.png" alt="" width="32" height="32" style="display: block; border: 0px; max-width: 32px;">
                               </a>
                             </p>
                           </td>
@@ -87,7 +87,7 @@ function checkSignature(event) {
                         <tr>
                           <td valign="middle" style="padding: 1px 5px 1px 0px; vertical-align: middle;">
                             <p style="margin: 1px;">
-                              <img src="./assets/mail.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
+                              <img src="https://louissig.github.io/ma-signature/assets/mail.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
                             </p>
                           </td>
                           <td style="font-family: &quot;Trebuchet MS&quot;, &quot;Lucida Grande&quot;, sans-serif; font-size: 13px; line-height: 16px; white-space: nowrap; color: rgb(84,84,83) !important; padding: 1px 0px; vertical-align: middle;">
@@ -105,7 +105,7 @@ function checkSignature(event) {
                         <tr>
                           <td valign="middle" style="padding: 1px 5px 1px 0px; vertical-align: middle;">
                             <p style="margin: 1px;">
-                              <img src="./assets/phone.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
+                              <img src="https://louissig.github.io/ma-signature/assets/phone.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
                             </p>
                           </td>
                           <td style="font-family: &quot;Trebuchet MS&quot;, &quot;Lucida Grande&quot;, sans-serif; font-size: 13px; line-height: 16px; white-space: nowrap; color: rgb(84,84,83) !important; padding: 1px 0px; vertical-align: middle;">
@@ -121,7 +121,7 @@ function checkSignature(event) {
                           </td>
                           <td valign="middle" style="padding: 1px 5px 1px 0px; vertical-align: middle;">
                             <p style="margin: 1px;">
-                              <img src="./assets/mobilePhone.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
+                              <img src="https://louissig.github.io/ma-signature/assets/mobilePhone.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
                             </p>
                           </td>
                           <td style="font-family: &quot;Trebuchet MS&quot;, &quot;Lucida Grande&quot;, sans-serif; font-size: 13px; line-height: 16px; white-space: nowrap; color: rgb(84,84,83) !important; padding: 1px 0px; vertical-align: middle;">
@@ -139,7 +139,7 @@ function checkSignature(event) {
                         <tr>
                           <td valign="top" style="padding: 1px 5px 1px 0px; vertical-align: top;">
                             <p style="margin: 1px;">
-                              <img src="./assets/map.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
+                              <img src="https://louissig.github.io/ma-signature/assets/map.png" alt="" width="18" height="18" style="display: block; border: 0px; max-width: 18px;">
                             </p>
                           </td>
                           <td style="font-family: &quot;Trebuchet MS&quot;, &quot;Lucida Grande&quot;, sans-serif; font-size: 13px; line-height: 16px; white-space: nowrap; color: rgb(84,84,83) !important; padding: 1px 0px; vertical-align: middle;">
