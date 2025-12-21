@@ -1,11 +1,9 @@
 Office.onReady();
 
 function checkSignature(event) {
-    // 1. Récupération du nom de l'utilisateur connecté
     const userName = Office.context.mailbox.userProfile.displayName;
     const userEmail = Office.context.mailbox.userProfile.emailAddress;
 
-    // 2. Construction de la signature dynamique
     const signatureHtml = `
             <div>
       <style>
@@ -176,7 +174,6 @@ function checkSignature(event) {
       </tr>
     </table>`;
 
-    // 3. Insertion de la signature
     Office.context.mailbox.item.body.setSignatureAsync(
         signatureHtml,
         { coercionType: Office.CoercionType.Html },
@@ -184,7 +181,6 @@ function checkSignature(event) {
             if (asyncResult.status === Office.AsyncResultStatus.Failed) {
                 console.error(asyncResult.error.message);
             }
-            // Indispensable : libère l'événement
             event.completed();
         }
     );
