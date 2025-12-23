@@ -1,3 +1,8 @@
+// Initialisation obligatoire pour Office
+Office.onReady(function () {
+    // Le code est prêt
+});
+
 function checkSignature(event) {
     const userName = Office.context.mailbox.userProfile.displayName;
     const userEmail = Office.context.mailbox.userProfile.emailAddress;
@@ -61,10 +66,13 @@ function checkSignature(event) {
         signatureHtml,
         { coercionType: Office.CoercionType.Html },
         function (asyncResult) {
+            if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+                console.log("Signature insérée.");
+            }
             event.completed();
         }
     );
 }
 
-// CETTE LIGNE EST LE DECLENCHEUR POUR L'AUTOMATISME
+// Enregistrement de la fonction
 Office.actions.associate("checkSignature", checkSignature);
