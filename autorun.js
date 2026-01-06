@@ -27,8 +27,9 @@ function checkSignature(event) {
         }
 
         // 3) Fallback : ne rien faire (ou une signature fixe de debug)
-        // var debug = "<div><b>OK parfait (fallback)</b></div>";
-        // insertSignature(item, debug, function(){ safeComplete(event); });
+        var debug = "<div><b>OK parfait (fallback)</b></div>";
+        insertSignature(item, debug, function(){ safeComplete(event); });
+        
         safeComplete(event);
       });
     });
