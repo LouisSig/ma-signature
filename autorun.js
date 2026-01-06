@@ -13,7 +13,10 @@ Office.onReady(function () {
  */
 function checkSignature(event) {
     try {
+
+        console.log("Signature trouvé ! 2");
         const item = Office.context.mailbox.item;
+        console.log("Signature trouvé ! 3");
         const helloHtml = checkSignature();
 
         console.log("Signature trouvé ! 4");
