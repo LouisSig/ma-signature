@@ -15,8 +15,8 @@ Office.onReady(function () {
 function checkSignature(event) {
     try {
         const item = Office.context.mailbox.item;
-        const helloHtml = "<div><b>Hello V1</b><br/>LaunchEvent & Manuel OK !</div>";
-
+        const helloHtml = "<div><b>Hello V1</b><br/>LaunchEvent & Manuel OK 2? !</div>";
+ 
         // 1. On vérifie si on peut utiliser setSignatureAsync (recommandé pour les signatures)
         if (item.body.setSignatureAsync) {
             item.body.setSignatureAsync(
