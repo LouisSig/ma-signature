@@ -51,31 +51,34 @@ function checkSignature(event) {
 
 
 async function getSignatureAPI(email) {
-  try {
-    const response = await fetch(
-      "https://localhost:44393/Profile/GetSignatureInAddOutlook",
-      {
-        method: "POST",
-        headers: {
-          "Content-type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams({
-          emailUser: email,
-        }),
-      }
-    );
+  const url = "https://localhost:44393/Profile/GetSignatureInAddOutlook";
 
-    if (!response.ok) {
-      return "";
-    }
+  // timeout court pour ne pas bloquer le flux
+  const controller = new AbortController();
+  const t = setTimeout(() => controller.abort(), 600);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ emailUser: email }),
+      signal: controller.signal,
+    });
+
+    if (!response.ok) return "";
 
     const data = await response.json();
+
+    // adapte selon ton API : si c'est déjà du HTML renvoyé, garde data
     return data || "";
   } catch (err) {
-    console.log("API indisponible → fallback vide");
+    // ✅ ERR_CONNECTION_REFUSED / timeout / CORS / certif : on ignore et on continue
     return "";
+  } finally {
+    clearTimeout(t);
   }
 }
+
 
 async function checkSignature() {
     const userEmail = Office.context.mailbox.userProfile.emailAddress;
