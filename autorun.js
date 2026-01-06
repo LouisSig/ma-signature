@@ -1,40 +1,43 @@
-Office.actions.associate("checkSignatureAuto", checkSignatureAuto);
-Office.actions.associate("insertSignatureManual", insertSignatureManual);
+// Enregistre plusieurs noms pour être sûr de matcher le manifeste
+Office.actions.associate("checkSignature", checkSignature);
+Office.actions.associate("checkSignatureAuto", checkSignature);
+Office.actions.associate("insertSignatureManual", checkSignature);
 
-function checkSignatureAuto(event) {
-  // Auto = minimal et robuste
-  insertFixedSignature(event);
-}
-
-function insertSignatureManual(event) {
-  // Clic = même action pour test, tu pourras complexifier après
-  insertFixedSignature(event);
-}
-
-function insertFixedSignature(event) {
+function checkSignature(event) {
   try {
     var item = Office.context.mailbox.item;
-    var html = "<div><b>OK parfait !</b><br/>Signature automatique SIGMA</div>";
 
+    // TEST 1 (fiable partout) : change le sujet
+    if (item && item.subject && item.subject.setAsync) {
+      item.subject.setAsync("OK parfait (handler appelé)", function () {
+        // TEST 2 : essaye d'écrire dans le corps
+        insertInBody(item, event);
+      });
+      return;
+    }
+
+    // si pas de subject (rare) : direct body
+    insertInBody(item, event);
+  } catch (e) {
+    safeComplete(event);
+  }
+}
+
+function insertInBody(item, event) {
+  var html = "<div><b>OK parfait !</b><br/>Handler exécuté.</div>";
+
+  try {
     if (item && item.body && item.body.setSignatureAsync) {
-      item.body.setSignatureAsync(
-        html,
-        { coercionType: Office.CoercionType.Html },
-        function () {
-          safeComplete(event);
-        }
-      );
+      item.body.setSignatureAsync(html, { coercionType: Office.CoercionType.Html }, function () {
+        safeComplete(event);
+      });
       return;
     }
 
     if (item && item.body && item.body.setSelectedDataAsync) {
-      item.body.setSelectedDataAsync(
-        html,
-        { coercionType: Office.CoercionType.Html },
-        function () {
-          safeComplete(event);
-        }
-      );
+      item.body.setSelectedDataAsync(html, { coercionType: Office.CoercionType.Html }, function () {
+        safeComplete(event);
+      });
       return;
     }
 
