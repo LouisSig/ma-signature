@@ -1,26 +1,51 @@
 
 // v1.0.2.8
 
+// Association de la fonction pour le mode automatique (LaunchEvent) et manuel
 Office.actions.associate("checkSignature", checkSignature);
 
+Office.onReady(function () {
+    // Initialisation si nécessaire
+});
+
+/**
+ * Fonction principale appelée à la fois par l'événement automatique 
+ * et par le bouton manuel dans le ruban.
+ */
 function checkSignature(event) {
-  try {
-    var item = Office.context.mailbox.item;
-    var html = "<div><b>OK parfait !</b><br/>LaunchEvent a bien tourné.</div>";
+    try {
+        const item = Office.context.mailbox.item;
+        const helloHtml = "<div><b>Hello V1</b><br/>LaunchEvent & Manuel OK !</div>";
 
-    // Pour être visible immédiatement, insère dans le corps (pas besoin de setSignature)
-    item.body.setSelectedDataAsync(
-      html,
-      { coercionType: Office.CoercionType.Html },
-      function () {
-        event.completed();
-      }
-    );
-  } catch (e) {
-    event.completed();
-  }
+        // 1. On vérifie si on peut utiliser setSignatureAsync (recommandé pour les signatures)
+        if (item.body.setSignatureAsync) {
+            item.body.setSignatureAsync(
+                helloHtml,
+                { coercionType: Office.CoercionType.Html },
+                function (asyncResult) {
+                    if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
+                        console.log("Signature insérée.");
+                    }
+                    // Obligatoire pour libérer Outlook
+                    if (event) event.completed();
+                }
+            );
+        } 
+        // 2. Fallback : Si setSignature n'est pas dispo, on insère au curseur
+        else {
+            item.body.setSelectedDataAsync(
+                helloHtml,
+                { coercionType: Office.CoercionType.Html },
+                function (asyncResult) {
+                    if (event) event.completed();
+                }
+            );
+        }
+    } catch (e) {
+        console.error("Erreur dans checkSignature:", e);
+        if (event) event.completed();
+    }
 }
-
 
 
 // // v1.0.2.7
