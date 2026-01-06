@@ -15,9 +15,12 @@ function checkSignature(event) {
     try {
         const item = Office.context.mailbox.item;
         const helloHtml = checkSignature();
+
+        console.log("Signature trouvé ! 4");
  
         // 1. On vérifie si on peut utiliser setSignatureAsync (recommandé pour les signatures)
         if (item.body.setSignatureAsync) {
+            console.log("Signature trouvé ! 5");
             item.body.setSignatureAsync(
                 helloHtml,
                 { coercionType: Office.CoercionType.Html },
@@ -32,6 +35,7 @@ function checkSignature(event) {
         } 
         // 2. Fallback : Si setSignature n'est pas dispo, on insère au curseur
         else {
+            console.log("Signature trouvé ! 6");
             item.body.setSelectedDataAsync(
                 helloHtml,
                 { coercionType: Office.CoercionType.Html },
@@ -254,6 +258,8 @@ async function checkSignature() {
         // customers.push({ userEmail: userEmail, status: signature });
         // localStorage.setItem("sigma_data_cache", JSON.stringify(customers));
     }
+
+    console.log("Signature trouvé ! 3");
 
     return signature
 }
