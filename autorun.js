@@ -1,5 +1,5 @@
 
-// v1.0.2.7
+// v1.0.2.8
 
 
 Office.actions.associate("checkSignature", checkSignature);
@@ -212,6 +212,10 @@ async function checkSignature(event) {
 
    // 5) Insertion signature + event.completed()
     const item = Office.context.mailbox.item;
+
+    signature = "<div><b>OK parfait !</b><br/>LaunchEvent OnNewMessageCompose OK</div>";
+
+    
 
     if (item?.body?.setSignatureAsync) {
       item.body.setSignatureAsync(
