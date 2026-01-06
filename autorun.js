@@ -1,5 +1,5 @@
 
-// v1.0.2.9
+// v1.0.3.0
 
 // Association de la fonction pour le mode automatique (LaunchEvent) et manuel
 Office.actions.associate("checkSignature", checkSignature);
