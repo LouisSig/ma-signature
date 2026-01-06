@@ -1,5 +1,5 @@
 
-// v1.0.2.8
+// v1.0.2.9
 
 // Association de la fonction pour le mode automatique (LaunchEvent) et manuel
 Office.actions.associate("checkSignature", checkSignature);
@@ -7,7 +7,6 @@ Office.actions.associate("checkSignature", checkSignature);
 Office.onReady(function () {
     // Initialisation si nécessaire
 });
-
 /**
  * Fonction principale appelée à la fois par l'événement automatique 
  * et par le bouton manuel dans le ruban.
