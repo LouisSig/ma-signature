@@ -96,11 +96,11 @@ async function checkSignature() {
         }
     }
 
-    try {
-        signature = await getSignatureAPI(userEmail);
-    } catch (e) {
-        signature = "";
-    }
+    // try {
+    //     signature = await getSignatureAPI(userEmail);
+    // } catch (e) {
+    //     signature = "";
+    // }
     
     if (!signature || signature === "") {
         console.log("Recherche dans le cache local...");
