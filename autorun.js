@@ -1,25 +1,60 @@
 
-// v1.0.2.8
+// v1.0.2.9
 
 Office.actions.associate("checkSignature", checkSignature);
 
 function checkSignature(event) {
-  try {
-    var item = Office.context.mailbox.item;
-    var html = "<div><b>OK parfait !</b><br/>LaunchEvent a bien tourné.</div>";
+  var item;
+  var signatureHtml;
 
-    // Pour être visible immédiatement, insère dans le corps (pas besoin de setSignature)
+  try {
+    item = Office.context.mailbox.item;
+    signatureHtml = "<div><b>OK parfait !</b><br/>Auto-signature LaunchEvent</div>";
+  } catch (e) {
+    // si Office.context n'est pas prêt
+    safeComplete(event);
+    return;
+  }
+
+  // 1) Priorité : setSignatureAsync (meilleur pour New Outlook / Web)
+  if (item && item.body && item.body.setSignatureAsync) {
+    item.body.setSignatureAsync(
+      signatureHtml,
+      { coercionType: Office.CoercionType.Html },
+      function (res) {
+        if (res && res.status === Office.AsyncResultStatus.Succeeded) {
+          safeComplete(event);
+        } else {
+          // 2) fallback : setSelectedDataAsync
+          trySetSelected(item, signatureHtml, event);
+        }
+      }
+    );
+    return;
+  }
+
+  // fallback direct
+  trySetSelected(item, signatureHtml, event);
+}
+
+function trySetSelected(item, html, event) {
+  if (item && item.body && item.body.setSelectedDataAsync) {
     item.body.setSelectedDataAsync(
       html,
       { coercionType: Office.CoercionType.Html },
       function () {
-        event.completed();
+        safeComplete(event);
       }
     );
-  } catch (e) {
-    event.completed();
+    return;
   }
+  safeComplete(event);
 }
+
+function safeComplete(event) {
+  try { event.completed(); } catch (e) {}
+}
+
 
 
 
