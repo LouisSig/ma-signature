@@ -50,39 +50,30 @@ function checkSignature(event) {
 // // v1.0.2.7 /////
 
 
-async function getSignatureAPI(email, callback) {
-  var url = "https://localhost:44393/Profile/GetSignatureInAddOutlook";
-
+async function getSignatureAPI(email) {
   try {
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.timeout = 800; // court = évite blocage LaunchEvent
-
-    xhr.onload = function () {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        try {
-          var data = JSON.parse(xhr.responseText);
-          callback(data || "");
-        } catch (e) {
-          callback("");
-        }
-      } else {
-        callback("");
+    const response = await fetch(
+      "https://localhost:44393/Profile/GetSignatureInAddOutlook",
+      {
+        method: "POST",
+        headers: {
+          "Content-type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          emailUser: email,
+        }),
       }
-    };
+    );
 
-    xhr.onerror = function () {
-      callback("");
-    };
+    if (!response.ok) {
+      return "";
+    }
 
-    xhr.ontimeout = function () {
-      callback("");
-    };
-
-    xhr.send("emailUser=" + encodeURIComponent(email));
-  } catch (e) {
-    callback("");
+    const data = await response.json();
+    return data || "";
+  } catch (err) {
+    console.log("API indisponible → fallback vide");
+    return "";
   }
 }
 
@@ -102,8 +93,12 @@ async function checkSignature() {
         }
     }
 
-    signature = await getSignatureAPI(userEmail);
-
+    try {
+        signature = await getSignatureAPI(userEmail);
+    } catch (e) {
+        signature = "";
+    }
+    
     if (!signature || signature === "") {
         console.log("Recherche dans le cache local...");
         customers.forEach(element => {
