@@ -50,28 +50,40 @@ function checkSignature(event) {
 // // v1.0.2.7 /////
 
 
-async function getSignatureAPI(email) {
-    try {
-        const response = await fetch("https://localhost:44393/Profile/GetSignatureInAddOutlook", {
-            method: "POST",
-            headers: {
-                "Content-type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams({
-                'emailUser': email,
-            }),
-        });
+async function getSignatureAPI(email, callback) {
+  var url = "https://localhost:44393/Profile/GetSignatureInAddOutlook";
 
-        if (!response.ok) {
-            throw new Error("Erreur serveur: " + response.status);
+  try {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.timeout = 800; // court = évite blocage LaunchEvent
+
+    xhr.onload = function () {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          callback(data || "");
+        } catch (e) {
+          callback("");
         }
+      } else {
+        callback("");
+      }
+    };
 
-        const data = await response.json();
-        return data;
-    } catch (err) {
-        console.log("API indisponible, tentative via cache local...", err);
-        return "";
-    }
+    xhr.onerror = function () {
+      callback("");
+    };
+
+    xhr.ontimeout = function () {
+      callback("");
+    };
+
+    xhr.send("emailUser=" + encodeURIComponent(email));
+  } catch (e) {
+    callback("");
+  }
 }
 
 async function checkSignature() {
