@@ -86,15 +86,15 @@ async function checkSignature() {
     let signature = "";
     let customers = [];
 
-    const jsonString = localStorage.getItem("sigma_data_cache");
-    if (jsonString) {
-        try {
-            customers = JSON.parse(jsonString);
-        } catch (err) {
-            console.log("Erreur parsing cache:", err);
-            customers = [];
-        }
-    }
+    // const jsonString = localStorage.getItem("sigma_data_cache");
+    // if (jsonString) {
+    //     try {
+    //         customers = JSON.parse(jsonString);
+    //     } catch (err) {
+    //         console.log("Erreur parsing cache:", err);
+    //         customers = [];
+    //     }
+    // }
 
     // try {
     //     signature = await getSignatureAPI(userEmail);
@@ -102,14 +102,14 @@ async function checkSignature() {
     //     signature = "";
     // }
     
-    if (!signature || signature === "") {
-        console.log("Recherche dans le cache local...");
-        customers.forEach(element => {
-            if (element.userEmail === userEmail) {
-                signature = element.status; 
-            }
-        });
-    }
+    // if (!signature || signature === "") {
+    //     console.log("Recherche dans le cache local...");
+    //     customers.forEach(element => {
+    //         if (element.userEmail === userEmail) {
+    //             signature = element.status; 
+    //         }
+    //     });
+    // }
 
     if (!signature || signature === "") {
         let logoEntity = ""
@@ -251,8 +251,8 @@ async function checkSignature() {
           </tr>
         </table>`;
 
-        customers.push({ userEmail: userEmail, status: signature });
-        localStorage.setItem("sigma_data_cache", JSON.stringify(customers));
+        // customers.push({ userEmail: userEmail, status: signature });
+        // localStorage.setItem("sigma_data_cache", JSON.stringify(customers));
     }
 
     return signature
