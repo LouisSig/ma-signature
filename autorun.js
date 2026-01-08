@@ -1,29 +1,62 @@
 
-// v1.0.3.0
+// // v1.0.3.1 // //
 
-// Association de la fonction pour le mode automatique (LaunchEvent) et manuel
 Office.actions.associate("checkSignature", checkSignature);
 
 Office.onReady(function () {
     // Initialisation si nécessaire
 });
-/**
- * Fonction principale appelée à la fois par l'événement automatique 
- * et par le bouton manuel dans le ruban.
- */
+
+async function storageGet(key) {
+  try {
+    if (typeof OfficeRuntime !== "undefined" && OfficeRuntime.storage?.getItem) {
+      return await OfficeRuntime.storage.getItem(key);
+    }
+  } catch (e) {
+    console.log("OfficeRuntime.storage KO:", e);
+  }
+
+  try {
+    if (typeof localStorage !== "undefined") {
+      return localStorage.getItem(key);
+    }
+  } catch (e) {
+    console.log("localStorage.getItem KO:", e);
+  }
+
+  return null;
+}
+
+async function storageSet(key, value) {
+  try {
+    if (typeof OfficeRuntime !== "undefined" && OfficeRuntime.storage?.setItem) {
+      await OfficeRuntime.storage.setItem(key, value);
+      return;
+    }
+  } catch (e) {
+    console.log("OfficeRuntime.storage KO:", e);
+  }
+
+  try {
+    if (typeof localStorage !== "undefined") {
+      localStorage.setItem(key, value);
+    }
+  } catch (e) {
+    console.log("localStorage.setItem KO:", e);
+  }
+}
+
+
+
 async function checkSignature(event) {
     try {
 
-        console.log("Signature trouvé ! 2");
+        console.log("test 2");
         const item = Office.context.mailbox.item;
-        console.log("Signature trouvé ! 3");
+        console.log("test 3");
         const helloHtml = await buildSignature();
-
-        console.log("Signature trouvé ! 4");
- 
-        // 1. On vérifie si on peut utiliser setSignatureAsync (recommandé pour les signatures)
         if (item.body.setSignatureAsync) {
-            console.log("Signature trouvé ! 5");
+            console.log("test 5");
             item.body.setSignatureAsync(
                 helloHtml,
                 { coercionType: Office.CoercionType.Html },
@@ -31,14 +64,13 @@ async function checkSignature(event) {
                     if (asyncResult.status === Office.AsyncResultStatus.Succeeded) {
                         console.log("Signature insérée.");
                     }
-                    // Obligatoire pour libérer Outlook
                     if (event) event.completed();
                 }
             );
         } 
-        // 2. Fallback : Si setSignature n'est pas dispo, on insère au curseur
+        
         else {
-            console.log("Signature trouvé ! 6");
+            console.log("test 6");
             item.body.setSelectedDataAsync(
                 helloHtml,
                 { coercionType: Office.CoercionType.Html },
@@ -54,13 +86,12 @@ async function checkSignature(event) {
 }
 
 
-// // v1.0.2.7 /////
+
 
 
 async function getSignatureAPI(email) {
-  const url = "https://localhost:44393/Profile/GetSignatureInAddOutlook";
+  const url = "https://intranet.sigma-france.org:44323/Profile/GetSignatureInAddOutlook";
 
-  // timeout court pour ne pas bloquer le flux
   const controller = new AbortController();
   const t = setTimeout(() => controller.abort(), 600);
 
@@ -76,11 +107,9 @@ async function getSignatureAPI(email) {
 
     const data = await response.json();
 
-    // adapte selon ton API : si c'est déjà du HTML renvoyé, garde data
     return data || "";
   } catch (err) {
-    // ✅ ERR_CONNECTION_REFUSED / timeout / CORS / certif : on ignore et on continue
-    return "";
+    return ""; // return "" car api n'a pas répondu.
   } finally {
     clearTimeout(t);
   }
@@ -93,31 +122,35 @@ async function buildSignature() {
     let signature = "";
     let customers = [];
 
-    // const jsonString = localStorage.getItem("sigma_data_cache");
-    // if (jsonString) {
-    //     try {
-    //         customers = JSON.parse(jsonString);
-    //     } catch (err) {
-    //         console.log("Erreur parsing cache:", err);
-    //         customers = [];
-    //     }
-    // }
 
-    // try {
-    //     signature = await getSignatureAPI(userEmail);
-    // } catch (e) {
-    //     signature = "";
-    // }
+    // api
+    try {
+        signature = await getSignatureAPI(userEmail);
+    } catch (e) {
+        signature = "";
+    }
+
+    // localstorage
+    const jsonString = storageGet("sigma_data_cache");
+    if (jsonString) {
+        try {
+            customers = JSON.parse(jsonString);
+        } catch (err) {
+            console.log("Erreur parsing cache:", err);
+            customers = [];
+        }
+    }
     
-    // if (!signature || signature === "") {
-    //     console.log("Recherche dans le cache local...");
-    //     customers.forEach(element => {
-    //         if (element.userEmail === userEmail) {
-    //             signature = element.status; 
-    //         }
-    //     });
-    // }
+    if (!signature || signature === "") {
+        console.log("Recherche dans le cache local...");
+        customers.forEach(element => {
+            if (element.userEmail === userEmail) {
+                signature = element.status; 
+            }
+        });
+    }
 
+    // creation de la signature
     if (!signature || signature === "") {
         let logoEntity = ""
         if (userEmail.includes("sigma-france.fr") || userEmail.includes("aria-services.fr")) {
@@ -258,11 +291,11 @@ async function buildSignature() {
           </tr>
         </table>`;
 
-        // customers.push({ userEmail: userEmail, status: signature });
-        // localStorage.setItem("sigma_data_cache", JSON.stringify(customers));
+        customers.push({ userEmail: userEmail, status: signature });
+        storageSet("sigma_data_cache", JSON.stringify(customers));
     }
 
-    console.log("Signature trouvé ! 3");
+    console.log("Signature trouvé !");
 
     return signature
 }
